@@ -1,4 +1,4 @@
-function calculateTotalWeight(data) {
+function calculateWeight(data) {
   const totals = [];
 
   data.forEach((workout) => {
@@ -17,7 +17,7 @@ function calculateTotalWeight(data) {
 
 function populateChart(data) {
   const durations = data.map(({ totalDuration }) => totalDuration);
-  const pounds = calculateTotalWeight(data);
+  const pounds = calculateWeight(data);
 
   const line = document.querySelector('#canvas').getContext('2d');
   const bar = document.querySelector('#canvas2').getContext('2d');
@@ -25,7 +25,6 @@ function populateChart(data) {
   const labels = data.map(({ day }) => {
     const date = new Date(day);
 
-    // Use JavaScript's `Intl` object to help format dates
     return new Intl.DateTimeFormat('en-US', {
       weekday: 'short',
       month: 'short',
@@ -39,7 +38,7 @@ function populateChart(data) {
       labels,
       datasets: [
         {
-          label: 'Workout Duration In Minutes',
+          label: 'Workout duration (minutes)',
           backgroundColor: 'red',
           borderColor: 'red',
           data: durations,
@@ -51,7 +50,7 @@ function populateChart(data) {
       responsive: true,
       title: {
         display: true,
-        text: 'Time Spent Working Out (Last 7 days)',
+        text: 'Time spent working out over past week',
       },
       scales: {
         y: {
@@ -107,5 +106,4 @@ function populateChart(data) {
   });
 }
 
-// get all workout data from back-end
 API.getWorkoutsInRange().then(populateChart);
